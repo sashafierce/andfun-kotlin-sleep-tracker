@@ -80,13 +80,6 @@ class SleepTrackerViewModel(
         get() = _showSnackbarEvent
 
     /**
-     * Variable that tells the Fragment to navigate to a specific [SleepQualityFragment]
-     *
-     * This is private because we don't want to expose setting this value to the Fragment.
-     */
-
-    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
-    /**
      * Call this immediately after calling `show()` on a toast.
      *
      * It will clear the toast request, so if the user rotates their phone it won't show a duplicate
@@ -96,21 +89,8 @@ class SleepTrackerViewModel(
     fun doneShowingSnackbar() {
         _showSnackbarEvent.value = false
     }
-    /**
-     * If this is non-null, immediately navigate to [SleepQualityFragment] and call [doneNavigating]
-     */
-    val navigateToSleepQuality: LiveData<SleepNight>
-        get() = _navigateToSleepQuality
 
-    /**
-     * Call this immediately after navigating to [SleepQualityFragment]
-     *
-     * It will clear the navigation request, so if the user rotates their phone it won't navigate
-     * twice.
-     */
-    fun doneNavigating() {
-        _navigateToSleepQuality.value = null
-    }
+
 
     init {
         initializeTonight()
@@ -130,11 +110,8 @@ class SleepTrackerViewModel(
      *  recording.
      */
     private suspend fun getTonightFromDatabase(): SleepNight? {
-            var night = database.getTonight()
-            if (night?.endTimeMilli != night?.startTimeMilli) {
-                night = null
-            }
-            return night
+
+        return database.getTonight()
     }
 
 
@@ -149,40 +126,48 @@ class SleepTrackerViewModel(
     private suspend fun insert(night: SleepNight) {
             database.insert(night)
     }
-
-    /**
-     * Executes when the START button is clicked.
-     */
-    fun onStartTracking() {
-        viewModelScope.launch {
-            // Create a new night, which captures the current time,
-            // and insert it into the database.
-            val newNight = SleepNight()
-
-            insert(newNight)
-
-            tonight.value = getTonightFromDatabase()
-        }
-    }
+//
+//    /**
+//     * Executes when the START button is clicked.
+//     */
+//    fun onStartTracking() {
+//        viewModelScope.launch {
+//            // Create a new night, which captures the current time,
+//            // and insert it into the database.
+//            val newNight = SleepNight()
+//
+//            insert(newNight)
+//
+//            tonight.value = getTonightFromDatabase()
+//        }
+//    }
 
     /**
      * Executes when the STOP button is clicked.
      */
-    fun onStopTracking() {
+    fun onStopTracking(goal1: String, goal2: String, goal3: String) {
         viewModelScope.launch {
             // In Kotlin, the return@label syntax is used for specifying which function among
             // several nested ones this statement returns from.
             // In this case, we are specifying to return from launch(),
             // not the lambda.
-            val oldNight = tonight.value ?: return@launch
+//            val oldNight = tonight.value ?: return@launch
+//
+//            // Update the night in the database to add the end time.
+//            oldNight.endTimeMilli = System.currentTimeMillis()
 
-            // Update the night in the database to add the end time.
-            oldNight.endTimeMilli = System.currentTimeMillis()
+//            update(oldNight)
+//
+//            // Set state to navigate to the SleepQualityFragment.
+//            _navigateToSleepQuality.value = oldNight
+            val newNight = SleepNight()
+            newNight.goal1 = goal1
+            newNight.goal2 = goal2
+            newNight.goal3 = goal3
 
-            update(oldNight)
+            insert(newNight)
 
-            // Set state to navigate to the SleepQualityFragment.
-            _navigateToSleepQuality.value = oldNight
+            tonight.value = getTonightFromDatabase()
         }
     }
 

@@ -45,7 +45,7 @@ interface SleepDatabaseDao {
      *
      * @param key startTimeMilli to match
      */
-    @Query("SELECT * from daily_sleep_quality_table WHERE nightId = :key")
+    @Query("SELECT * from goal_history_table WHERE dayId = :key")
     suspend fun get(key: Long): SleepNight?
 
     /**
@@ -53,7 +53,7 @@ interface SleepDatabaseDao {
      *
      * This does not delete the table, only its contents.
      */
-    @Query("DELETE FROM daily_sleep_quality_table")
+    @Query("DELETE FROM goal_history_table")
     suspend fun clear()
 
     /**
@@ -61,13 +61,13 @@ interface SleepDatabaseDao {
      *
      * sorted by start time in descending order.
      */
-    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC")
+    @Query("SELECT * FROM goal_history_table ORDER BY dayId DESC")
     fun getAllNights(): LiveData<List<SleepNight>>
 
     /**
      * Selects and returns the latest night.
      */
-    @Query("SELECT * FROM daily_sleep_quality_table ORDER BY nightId DESC LIMIT 1")
+    @Query("SELECT * FROM goal_history_table ORDER BY dayId DESC LIMIT 1")
     suspend fun getTonight(): SleepNight?
 
 }

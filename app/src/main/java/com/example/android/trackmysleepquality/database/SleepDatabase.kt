@@ -28,7 +28,7 @@ import androidx.room.RoomDatabase
  * This pattern is pretty much the same for any database,
  * so you can reuse it.
  */
-@Database(entities = [SleepNight::class], version = 1, exportSchema = false)
+@Database(entities = [SleepNight::class], version = 2, exportSchema = false)
 abstract class SleepDatabase : RoomDatabase() {
 
     /**
@@ -85,7 +85,7 @@ abstract class SleepDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                             context.applicationContext,
                             SleepDatabase::class.java,
-                            "sleep_history_database"
+                            "goal_history_database"
                     )
                             // Wipes and rebuilds instead of migrating if no Migration object.
                             // Migration is not part of this lesson. You can learn more about

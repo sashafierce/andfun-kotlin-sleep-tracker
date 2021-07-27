@@ -29,22 +29,6 @@ import java.text.SimpleDateFormat
  * These functions create a formatted string that can be set in a TextView.
  */
 
-/**
- * Returns a string representing the numeric quality rating.
- */
-fun convertNumericQualityToString(quality: Int, resources: Resources): String {
-    var qualityString = resources.getString(R.string.three_ok)
-    when (quality) {
-        -1 -> qualityString = "--"
-        0 -> qualityString = resources.getString(R.string.zero_very_bad)
-        1 -> qualityString = resources.getString(R.string.one_poor)
-        2 -> qualityString = resources.getString(R.string.two_soso)
-        4 -> qualityString = resources.getString(R.string.four_pretty_good)
-        5 -> qualityString = resources.getString(R.string.five_excellent)
-    }
-    return qualityString
-}
-
 
 /**
  * Take the Long milliseconds returned by the system and stored in Room,
@@ -81,21 +65,23 @@ fun formatNights(nights: List<SleepNight>, resources: Resources): Spanned {
         append(resources.getString(R.string.title))
         nights.forEach {
             append("<br>")
-            append(resources.getString(R.string.start_time))
-            append("\t${convertLongToDateString(it.startTimeMilli)}<br>")
-            if (it.endTimeMilli != it.startTimeMilli) {
-                append(resources.getString(R.string.end_time))
-                append("\t${convertLongToDateString(it.endTimeMilli)}<br>")
-                append(resources.getString(R.string.quality))
-                append("\t${convertNumericQualityToString(it.sleepQuality, resources)}<br>")
-                append(resources.getString(R.string.hours_slept))
-                // Hours
-                append("\t ${it.endTimeMilli.minus(it.startTimeMilli) / 1000 / 60 / 60}:")
-                // Minutes
-                append("${it.endTimeMilli.minus(it.startTimeMilli) / 1000 / 60}:")
-                // Seconds
-                append("${it.endTimeMilli.minus(it.startTimeMilli) / 1000}<br><br>")
+            append(resources.getString(R.string.timestamp))
+            append("\t${convertLongToDateString(it.timestamp)}<br>")
+            append(resources.getString(R.string.goals_title))
+
+            if (it.goal1 != "") {
+                append("\t${it.goal1} , ")
             }
+            if (it.goal2 != "") {
+                append("\t${it.goal2} , ")
+            }
+            if (it.goal3 != "") {
+                append("\t${it.goal3}")
+            }
+            append("<br>")
+
+            append(resources.getString(R.string.num_achieved))
+            append("\t${it.numAchieved.toString()}<br>")
         }
     }
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -20,17 +20,23 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "daily_sleep_quality_table")
+@Entity(tableName = "goal_history_table")
 data class SleepNight(
         @PrimaryKey(autoGenerate = true)
-        var nightId: Long = 0L,
+        var dayId: Long = 0L,
 
-        @ColumnInfo(name = "start_time_milli")
-        val startTimeMilli: Long = System.currentTimeMillis(),
+        @ColumnInfo(name = "timestamp")
+        val timestamp: Long = System.currentTimeMillis(),
 
-        @ColumnInfo(name = "end_time_milli")
-        var endTimeMilli: Long = startTimeMilli,
+        @ColumnInfo(name = "goal_1")
+        var goal1: String? = null,
 
-        @ColumnInfo(name = "quality_rating")
-        var sleepQuality: Int = -1
+        @ColumnInfo(name = "goal_2")
+        var goal2: String? = null,
+
+        @ColumnInfo(name = "goal_3")
+        var goal3: String? = null,
+
+        @ColumnInfo(name = "num_goals_achieved")
+        var numAchieved: Int = -1
 )
