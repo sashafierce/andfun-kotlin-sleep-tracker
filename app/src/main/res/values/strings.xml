@@ -28,7 +28,8 @@
     <string name="goal1_hint">Goal 1</string>
     <string name="goal2_hint">Goal 2</string>
     <string name="goal3_hint">Goal 3</string>
-    <string name="goals_title">Goals</string>
+    <string name="num_achieved_hint">No. of goals achieved</string>
+    <string name="goals_title"><![CDATA[<b>Goals:</b>]]></string>
     <string name="timestamp"><![CDATA[<b>Timestamp:</b>]]></string>
     <string name="num_achieved"><![CDATA[<b>No. of goals achieved:</b>]]></string>
 

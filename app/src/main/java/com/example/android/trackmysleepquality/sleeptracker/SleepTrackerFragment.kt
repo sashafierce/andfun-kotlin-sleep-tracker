@@ -66,10 +66,14 @@ class SleepTrackerFragment : Fragment() {
             val goal1 = binding.goal1TextInput.text.toString()
             val goal2 = binding.goal2TextInput.text.toString()
             val goal3 = binding.goal3TextInput.text.toString()
+            val numAchieved = binding.numAchievedTextInput.text.toString().toInt()
+
+
             if(goal1.isNotEmpty() || goal2.isNotEmpty() || goal3.isNotEmpty()){
-                sleepTrackerViewModel.onStopTracking(goal1, goal2, goal3)
+                sleepTrackerViewModel.onStopTracking(goal1, goal2, goal3, numAchieved)
             }
         }
+
 
         // Add an Observer on the state variable for showing a Snackbar message
         // when the CLEAR button is pressed.

@@ -145,29 +145,36 @@ class SleepTrackerViewModel(
     /**
      * Executes when the STOP button is clicked.
      */
-    fun onStopTracking(goal1: String, goal2: String, goal3: String) {
+    fun onStopTracking(goal1: String, goal2: String, goal3: String, numAchieved: Int) {
         viewModelScope.launch {
             // In Kotlin, the return@label syntax is used for specifying which function among
             // several nested ones this statement returns from.
             // In this case, we are specifying to return from launch(),
             // not the lambda.
-//            val oldNight = tonight.value ?: return@launch
-//
-//            // Update the night in the database to add the end time.
-//            oldNight.endTimeMilli = System.currentTimeMillis()
+            val oldNight = tonight.value ?: null
+            if (oldNight != null){
+                // Update the night in the database to add the end time.
+                oldNight.goal1 = goal1
+                oldNight.goal2 = goal2
+                oldNight.goal3 = goal3
+                oldNight.numAchieved = numAchieved
 
-//            update(oldNight)
-//
-//            // Set state to navigate to the SleepQualityFragment.
-//            _navigateToSleepQuality.value = oldNight
-            val newNight = SleepNight()
-            newNight.goal1 = goal1
-            newNight.goal2 = goal2
-            newNight.goal3 = goal3
+                update(oldNight)
+            }
+            else {
 
-            insert(newNight)
+                val newNight = SleepNight()
+                newNight.goal1 = goal1
+                newNight.goal2 = goal2
+                newNight.goal3 = goal3
+                newNight.numAchieved = numAchieved.toInt()
 
-            tonight.value = getTonightFromDatabase()
+
+                insert(newNight)
+
+                tonight.value = getTonightFromDatabase()
+            }
+
         }
     }
 

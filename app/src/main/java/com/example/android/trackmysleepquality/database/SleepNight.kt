@@ -19,6 +19,7 @@ package com.example.android.trackmysleepquality.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.text.SimpleDateFormat
 
 @Entity(tableName = "goal_history_table")
 data class SleepNight(
@@ -27,6 +28,8 @@ data class SleepNight(
 
         @ColumnInfo(name = "timestamp")
         val timestamp: Long = System.currentTimeMillis(),
+//        val timestamp: String = SimpleDateFormat("MMM-dd-yyyy'")
+//            .format(System.currentTimeMillis()).toString(),
 
         @ColumnInfo(name = "goal_1")
         var goal1: String? = null,
