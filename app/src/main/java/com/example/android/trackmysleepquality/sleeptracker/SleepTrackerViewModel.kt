@@ -26,6 +26,7 @@ import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.formatNights
 import kotlinx.coroutines.*
+import java.text.SimpleDateFormat
 
 /**
  * ViewModel for SleepTrackerFragment.
@@ -152,23 +153,21 @@ class SleepTrackerViewModel(
             // In this case, we are specifying to return from launch(),
             // not the lambda.
             val oldNight = tonight.value ?: null
-            if (oldNight != null){
-                // Update the night in the database to add the end time.
-                oldNight.goal1 = goal1
-                oldNight.goal2 = goal2
-                oldNight.goal3 = goal3
-                oldNight.numAchieved = numAchieved
+            if (oldNight != null && SimpleDateFormat("MMM-dd-yyyy").format(oldNight.timestamp)
+                    .equals(SimpleDateFormat("MMM-dd-yyyy").format(System.currentTimeMillis()))){
+                    oldNight.goal1 = goal1
+                    oldNight.goal2 = goal2
+                    oldNight.goal3 = goal3
+                    oldNight.numAchieved = numAchieved
 
-                update(oldNight)
+                    update(oldNight)
             }
             else {
-
                 val newNight = SleepNight()
                 newNight.goal1 = goal1
                 newNight.goal2 = goal2
                 newNight.goal3 = goal3
-                newNight.numAchieved = numAchieved.toInt()
-
+                newNight.numAchieved = numAchieved
 
                 insert(newNight)
 
